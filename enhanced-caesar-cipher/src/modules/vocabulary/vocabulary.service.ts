@@ -1,10 +1,14 @@
+import { from, map, Observable, switchMap } from 'rxjs';
+
 export const vocabularyService = {
   readVocabularyFile,
   parseVocabularyData,
 };
 
-async function readVocabularyFile(): Promise<string> {
-  return fetch('/vocabulary.txt').then((res) => res.text());
+function readVocabularyFile(): Observable<string> {
+  return from(fetch('/vocabulary.txt')).pipe(
+    switchMap((res) => from(res.text()))
+  );
 }
 
 function parseVocabularyData(input: string): string {

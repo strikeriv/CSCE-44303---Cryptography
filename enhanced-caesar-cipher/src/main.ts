@@ -72,19 +72,22 @@ function adjustDecryptOnCheckboxClick() {
   }
 }
 
-function decrypt() {
+async function decrypt() {
   const textInput = $decryptTextElement.value;
   const keyInput = parseInt($decryptKeyElement.value);
   const modeInput = $decryptModeElement.value as EncryptMode;
 
   const doBruteForce = $decryptBruteForceElement.checked;
 
-  let result;
-  if (doBruteForce) {
-    result = decryptService.bruteForceDecrypt(textInput, modeInput);
-  } else {
-    result = decryptService.decrypt(textInput, keyInput, modeInput);
+  if (!doBruteForce) {
+    $decryptOutputElement.textContent = decryptService.decrypt(
+      textInput,
+      keyInput,
+      modeInput
+    );
   }
 
-  $decryptOutputElement.textContent = result;
+  decryptService.bruteForceDecrypt(textInput, modeInput).subscribe(() => {
+    $decryptOutputElement.textContent = 'test';
+  });
 }
