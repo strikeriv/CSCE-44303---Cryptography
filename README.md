@@ -8,4 +8,4 @@ To run a project, follow these steps:
 
 - `cd` to the correct folder
 - `npm ci` to install the required packages
-- `npm run start` to start the program
+- `npm run dev` to start the program

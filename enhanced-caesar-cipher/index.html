@@ -4,28 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css" rel="stylesheet" />
     <title>Enhanced Caesar Cipher</title>
   </head>
   <body class="bg-gray-900 text-white">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
     <div class="flex w-full h-full p-6 gap-[4rem] justify-center items-center">
       <div
-        class="w-1/2 h-6/10 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+        class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
       >
         <form class="w-full space-y-6">
-          <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-            Encrypt Plaintext
-          </h5>
+          <h5 class="text-xl font-medium text-gray-900 dark:text-white">Encrypt Plaintext</h5>
 
           <div class="w-full space-y-4">
             <div>
-              <label
-                for="encrypt-text-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Message to Encrypt</label
               >
               <textarea
@@ -37,9 +30,7 @@
 
             <div class="flex justify-between w-full">
               <div class="w-2/6">
-                <label
-                  for="encrypt-key-input"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="encrypt-key-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Key</label
                 >
                 <input
@@ -54,9 +45,7 @@
               </div>
 
               <div class="w-2/6">
-                <label
-                  for="encrypt-mode-select"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="encrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Case Strategy</label
                 >
                 <select
@@ -79,9 +68,7 @@
           </button>
 
           <div>
-            <label
-              for="encrypt-text-input"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Encrypted Text</label
             >
             <textarea
@@ -95,18 +82,14 @@
       </div>
 
       <div
-        class="w-1/2 h-6/10 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+        class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
       >
         <form class="w-full h-full space-y-6">
-          <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-            Decrypt Ciphertext
-          </h5>
+          <h5 class="text-xl font-medium text-gray-900 dark:text-white">Decrypt Ciphertext</h5>
 
           <div class="w-full h-max space-y-4">
             <div>
-              <label
-                for="decrypt-text-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Message to Decrypt</label
               >
               <textarea
@@ -118,9 +101,7 @@
 
             <div class="flex justify-between items-end gap-6 w-full h-full">
               <div class="w-2/6">
-                <label
-                  for="decrypt-key-select"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="decrypt-key-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Decryption Key</label
                 >
                 <input
@@ -135,9 +116,7 @@
               </div>
 
               <div class="w-2/6">
-                <label
-                  for="decrypt-mode-select"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="decrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Case Strategy</label
                 >
                 <select
@@ -156,9 +135,7 @@
                     type="checkbox"
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label
-                    for="brute-force-checkbox"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  <label for="brute-force-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                     >Brute force key?</label
                   >
                 </div>
@@ -175,9 +152,7 @@
           </button>
 
           <div>
-            <label
-              for="decrypt-text-input"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Decrypted Text</label
             >
             <textarea

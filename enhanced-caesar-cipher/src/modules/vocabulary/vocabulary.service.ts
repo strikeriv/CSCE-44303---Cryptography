@@ -1,20 +1,33 @@
-import { from, map, Observable, switchMap } from 'rxjs';
+import { from, map, Observable, switchMap } from "rxjs";
+import type { AnalysisResult } from "./vocabulary.types";
 
 export const vocabularyService = {
   readVocabularyFile,
   parseVocabularyData,
+  analyzeDecryptedText,
 };
 
 function readVocabularyFile(): Observable<string> {
-  return from(fetch('/vocabulary.txt')).pipe(
-    switchMap((res) => from(res.text()))
-  );
+  return from(fetch("/vocabulary.txt")).pipe(switchMap((res) => from(res.text())));
 }
 
 function parseVocabularyData(input: string): string {
-  const strippedinput = input
-    .toLocaleLowerCase()
-    .replace(/[^a-zA-Z0-9 ]/gim, '');
+  return stripTextOfSpecialCharacters(input);
+}
 
-  return strippedinput;
+function analyzeDecryptedText(text: string, key: number, dictionary: string[]): AnalysisResult {
+  const words = stripTextOfSpecialCharacters(text).split(" ");
+
+  const matches = words.map((word) => dictionary.includes(word));
+  const match = matches.findIndex((m) => m === true);
+
+  return {
+    found: match != -1, // at least one word matches
+    key, // index of first matching word
+    plaintext: text, // decrypted text
+  };
+}
+
+function stripTextOfSpecialCharacters(input: string): string {
+  return input.toLocaleLowerCase().replace(/[^a-zA-Z0-9 ]/gim, "");
 }

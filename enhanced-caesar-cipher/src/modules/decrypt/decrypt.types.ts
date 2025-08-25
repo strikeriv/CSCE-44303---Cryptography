@@ -1,4 +1,5 @@
 export interface BruteForceResult {
-  key: string;
-  plaintext: string;
+  decrypted: boolean;
+  key?: number;
+  plaintext?: string;
 }
