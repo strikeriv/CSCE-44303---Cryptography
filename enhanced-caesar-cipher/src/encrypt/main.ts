@@ -7,6 +7,12 @@ declare global {
   }
 }
 
+interface EncryptInput {
+  input: string;
+  key: string;
+  strategy: EncryptMode;
+}
+
 const $encryptOutputElement = document.getElementById(
   'encrypt-output'
 ) as HTMLTextAreaElement;
@@ -16,7 +22,9 @@ function encrypt(event: SubmitEvent) {
 
   const form = event.target! as HTMLFormElement;
   const formData = new FormData(form);
-  const { input, key, strategy } = Object.fromEntries(formData);
+  const { input, key, strategy } = Object.fromEntries(
+    formData
+  ) as unknown as EncryptInput;
 
   if (!input) {
     $encryptOutputElement.textContent = 'No plaintext to encrypt.';
@@ -24,9 +32,9 @@ function encrypt(event: SubmitEvent) {
   }
 
   $encryptOutputElement.textContent = encryptService.encrypt(
-    input.toString(),
-    parseInt(key.toString()),
-    strategy.toString() as EncryptMode
+    input,
+    parseInt(key),
+    strategy
   );
 }
 

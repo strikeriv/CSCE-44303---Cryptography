@@ -7,5 +7,5 @@ This repo contains my solutions to projects within the CSCE 44303 class.
 To run a project, follow these steps:
 
 - `cd` to the correct folder
-- `npm ci` to install the required packages
+- `bun install` to install the required packages
 - `npm run dev` to start the program

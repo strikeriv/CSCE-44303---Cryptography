@@ -71,18 +71,14 @@ function bruteForce(event: SubmitEvent) {
   }
 
   decryptService
-    .bruteForceDecrypt(
-      dictionaryUrl,
-      input.toString(),
-      strategy.toString() as EncryptMode
-    )
+    .bruteForceDecrypt(dictionaryUrl, input, strategy)
     .subscribe((result) => {
       const { decrypted, key, plaintext } = result;
 
       if (!decrypted) {
         $bruteForceOutputElement.textContent = 'No plaintext was found.';
       } else {
-        $bruteForceOutputElement.textContent = `Key = ${key}\n---\n${plaintext}`;
+        $bruteForceOutputElement.textContent = `Key = ${key}\n----------\n${plaintext}`;
       }
     });
 }
