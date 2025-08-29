@@ -18,6 +18,11 @@ function encrypt(event: SubmitEvent) {
   const formData = new FormData(form);
   const { input, key, strategy } = Object.fromEntries(formData);
 
+  if (!input) {
+    $encryptOutputElement.textContent = 'No plaintext to encrypt.';
+    return;
+  }
+
   $encryptOutputElement.textContent = encryptService.encrypt(
     input.toString(),
     parseInt(key.toString()),

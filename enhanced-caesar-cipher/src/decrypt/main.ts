@@ -8,6 +8,18 @@ declare global {
   }
 }
 
+interface DecryptInput {
+  input: string;
+  key: string;
+  strategy: EncryptMode;
+}
+
+interface BruteForceInput {
+  input: string;
+  dictionaryFile: File;
+  strategy: EncryptMode;
+}
+
 const $decryptOutputElement = document.getElementById(
   'decrypt-output'
 ) as HTMLTextAreaElement;
@@ -21,12 +33,19 @@ function decrypt(event: SubmitEvent) {
 
   const form = event.target! as HTMLFormElement;
   const formData = new FormData(form);
-  const { input, key, strategy } = Object.fromEntries(formData);
+  const { input, key, strategy } = Object.fromEntries(
+    formData
+  ) as unknown as DecryptInput;
+
+  if (!input) {
+    $decryptOutputElement.textContent = 'No ciphertext to decrypt.';
+    return;
+  }
 
   $decryptOutputElement.textContent = decryptService.decrypt(
-    input.toString(),
-    parseInt(key.toString()),
-    strategy.toString() as EncryptMode
+    input,
+    parseInt(key),
+    strategy
   );
 }
 
@@ -35,10 +54,28 @@ function bruteForce(event: SubmitEvent) {
 
   const form = event.target! as HTMLFormElement;
   const formData = new FormData(form);
-  const { input, strategy } = Object.fromEntries(formData);
+  const { input, dictionaryFile, strategy } = Object.fromEntries(
+    formData
+  ) as unknown as BruteForceInput;
+
+  const dictionaryUrl = URL.createObjectURL(dictionaryFile);
+
+  if (!input) {
+    $bruteForceOutputElement.textContent = 'No ciphertext to decrypt.';
+    return;
+  }
+
+  if (!dictionaryFile.name) {
+    $bruteForceOutputElement.textContent = 'No dictionary file chosen.';
+    return;
+  }
 
   decryptService
-    .bruteForceDecrypt(input.toString(), strategy.toString() as EncryptMode)
+    .bruteForceDecrypt(
+      dictionaryUrl,
+      input.toString(),
+      strategy.toString() as EncryptMode
+    )
     .subscribe((result) => {
       const { decrypted, key, plaintext } = result;
 
