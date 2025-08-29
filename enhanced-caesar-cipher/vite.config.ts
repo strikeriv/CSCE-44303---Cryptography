@@ -1,14 +1,17 @@
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
+
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [tailwindcss()],
-  base: "./",
   build: {
     rollupOptions: {
       input: {
-        home: "src/home/index.html",
-        encrypt: "src/encrypt/index.html",
+        main: resolve(__dirname, 'index.html'),
+        about: resolve(__dirname, 'about/index.html'),
+        contact: resolve(__dirname, 'contact/index.html'),
+        // Add more pages here as needed
       },
     },
   },
