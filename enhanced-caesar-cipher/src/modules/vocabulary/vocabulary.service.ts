@@ -1,4 +1,4 @@
-import { from, map, Observable, switchMap } from "rxjs";
+import { from, Observable, switchMap } from "rxjs";
 import type { AnalysisResult } from "./vocabulary.types";
 
 export const vocabularyService = {
@@ -19,10 +19,10 @@ function analyzeDecryptedText(text: string, key: number, dictionary: string[]): 
   const words = stripTextOfSpecialCharacters(text).split(" ");
 
   const matches = words.map((word) => dictionary.includes(word));
-  const match = matches.findIndex((m) => m === true);
+  const match = matches.filter((m) => m === true);
 
   return {
-    found: match != -1, // at least one word matches
+    found: match.length > 0, // at least one word matches
     key, // index of first matching word
     plaintext: text, // decrypted text
   };

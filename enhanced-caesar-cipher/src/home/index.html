@@ -1,0 +1,174 @@
+<div class="flex w-full h-full justify-center items-center flex-col pb-[4rem]">
+  <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">Enhanced Caesar Cipher Program</h1>
+
+  <div class="flex flex-row w-full h-full gap-[4rem] px-[4rem]">
+    <div
+      class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+    >
+      <form class="flex flex-col w-full h-full space-y-6">
+        <h5 class="text-xl font-medium text-gray-900 dark:text-white">Encrypt Plaintext</h5>
+
+        <div class="w-full space-y-4">
+          <div>
+            <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Message to Encrypt</label
+            >
+            <textarea
+              id="encrypt-text-input"
+              rows="4"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-between w-full">
+            <div class="w-2/6">
+              <label for="encrypt-key-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Key</label
+              >
+              <input
+                type="number"
+                id="encrypt-key-input"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value="0"
+                min="0"
+                max="25"
+                required
+              />
+            </div>
+
+            <div class="w-2/6">
+              <label for="encrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Case Strategy</label
+              >
+              <select
+                id="encrypt-mode-select"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option selected value="MaintainCase">Maintain Case</option>
+                <option value="IgnoreCase">Ignore Case</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          id="encrypt-submit"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Encrypt
+        </button>
+
+        <div class="grow shrink"></div>
+        <div>
+          <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Encrypted Text</label
+          >
+          <textarea
+            id="encrypt-output"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            disabled
+          ></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div
+      class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+    >
+      <form class="w-full h-full space-y-6">
+        <div class="flex justify-between items-center">
+          <h5 class="text-xl font-medium text-gray-900 dark:text-white">Decrypt Ciphertext</h5>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input"
+              >Upload Vocabulary File</label
+            >
+            <input
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              id="file_input"
+              type="file"
+            />
+          </div>
+        </div>
+
+        <div class="w-full h-max space-y-4">
+          <div>
+            <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Message to Decrypt</label
+            >
+            <textarea
+              id="decrypt-text-input"
+              rows="4"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-between items-end gap-6 w-full h-full">
+            <div class="w-2/6">
+              <label for="decrypt-key-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Decryption Key</label
+              >
+              <input
+                type="number"
+                id="decrypt-key-input"
+                class="disabled:opacity-50 disabled:cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value="0"
+                min="0"
+                max="25"
+                required
+              />
+            </div>
+
+            <div class="w-2/6">
+              <label for="decrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Case Strategy</label
+              >
+              <select
+                id="decrypt-mode-select"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option selected value="MaintainCase">Maintain Case</option>
+                <option value="IgnoreCase">Ignore Case</option>
+              </select>
+            </div>
+
+            <div class="w-2/6 flex h-full justify-center">
+              <div class="flex items-center">
+                <input
+                  id="brute-force-checkbox"
+                  type="checkbox"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label for="brute-force-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Brute force key?</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          id="decrypt-submit"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Decrypt
+        </button>
+
+        <div>
+          <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Decrypted Text</label
+          >
+          <textarea
+            id="decrypt-output"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            disabled
+          ></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
