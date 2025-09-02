@@ -4,55 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/src/styles/global.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css" rel="stylesheet" />
     <title>Enhanced Caesar Cipher - Decrypt</title>
   </head>
   <body class="bg-gray-900 text-white">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
     <script type="module" src="/src/decrypt/main.ts"></script>
 
-    <div
-      class="flex w-full h-full justify-center items-center flex-col pb-[4rem]"
-    >
-      <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">
-        Enhanced Caesar Cipher - Decrypt
-      </h1>
+    <div class="flex w-full h-full justify-center items-center flex-col pb-[4rem]">
+      <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">Enhanced Caesar Cipher - Decrypt</h1>
 
       <div class="flex flex-row w-full h-full gap-[4rem] px-[4rem]">
         <div
           class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
-          <form
-            onsubmit="decrypt(event)"
-            class="flex flex-col w-full h-full space-y-6"
-          >
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-              Decrypt CipherText
-            </h5>
+          <form onsubmit="decrypt(event)" class="flex flex-col w-full h-full space-y-6">
+            <h5 class="text-xl font-medium text-gray-900 dark:text-white">Decrypt CipherText</h5>
 
             <div class="w-full space-y-4">
               <div>
-                <label
-                  for="decrypt-text-input"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Ciphertext to Decrypt</label
                 >
                 <textarea
                   name="input"
                   id="decrypt-text-input"
-                  rows="8"
+                  rows="6"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 ></textarea>
               </div>
 
               <div class="flex justify-between w-full">
                 <div class="w-2/6">
-                  <label
-                    for="decrypt-key-input"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  <label for="decrypt-key-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Key</label
                   >
                   <input
@@ -68,9 +52,7 @@
                 </div>
 
                 <div class="w-2/6">
-                  <label
-                    for="decrypt-mode-select"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  <label for="decrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Case Strategy</label
                   >
                   <select
@@ -90,7 +72,7 @@
                 <button
                   type="submit"
                   id="encrypt-submit"
-                  class="w-1/2 h-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Decrypt
                 </button>
@@ -98,14 +80,12 @@
             </div>
 
             <div>
-              <label
-                for="encrypt-text-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Decrypted Text</label
               >
               <textarea
                 id="decrypt-output"
-                rows="8"
+                rows="6"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 disabled
               ></textarea>
@@ -116,34 +96,25 @@
         <div
           class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
-          <form
-            onsubmit="bruteForce(event)"
-            class="flex flex-col w-full h-full space-y-6"
-          >
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-              Bruteforce Decrypt
-            </h5>
+          <form onsubmit="bruteForce(event)" class="flex flex-col w-full h-full space-y-6">
+            <h5 class="text-xl font-medium text-gray-900 dark:text-white">Bruteforce Decrypt</h5>
 
             <div class="w-full space-y-4">
               <div>
-                <label
-                  for="decrypt-text-input"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="decrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Ciphertext to Decrypt</label
                 >
                 <textarea
                   name="input"
                   id="decrypt-text-input"
-                  rows="8"
+                  rows="6"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 ></textarea>
               </div>
 
               <div class="flex justify-between w-full">
-                <div class="w-2/6">
-                  <label
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    for="file_input"
+                <div class="w-3/6">
+                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input"
                     >Dictonary File</label
                   >
                   <input
@@ -156,9 +127,7 @@
                 </div>
 
                 <div class="w-2/6">
-                  <label
-                    for="decrypt-mode-select"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  <label for="decrypt-mode-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >Case Strategy</label
                   >
                   <select
@@ -178,7 +147,7 @@
                 <button
                   type="submit"
                   id="encrypt-submit"
-                  class="w-1/2 h-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Bruteforce Decrypt
                 </button>
@@ -186,14 +155,12 @@
             </div>
 
             <div>
-              <label
-                for="encrypt-text-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <label for="encrypt-text-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Decrypted Text</label
               >
               <textarea
                 id="bruteforce-output"
-                rows="8"
+                rows="6"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 disabled
               ></textarea>
