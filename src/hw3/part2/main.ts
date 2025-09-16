@@ -26,10 +26,36 @@ const $decryptOutputElement = document.getElementById("decrypt-output") as HTMLT
 
 function encrypt(event: SubmitEvent) {
   event.preventDefault();
+
+  const form = event.target! as HTMLFormElement;
+  const formData = new FormData(form);
+  const { plaintext } = Object.fromEntries(formData) as unknown as EncryptInput;
+
+  if (!plaintext) {
+    $encryptOutputElement.textContent = "No plaintext to encrypt.";
+    return;
+  }
+
+  RSA2048Service.encrypt(bobKeyPair.publicKey, plaintext).subscribe((ciphertext) => {
+    $encryptOutputElement.textContent = ciphertext;
+  });
 }
 
 function decrypt(event: SubmitEvent) {
   event.preventDefault();
+
+  const form = event.target! as HTMLFormElement;
+  const formData = new FormData(form);
+  const { ciphertext } = Object.fromEntries(formData) as unknown as DecryptInput;
+
+  if (!ciphertext) {
+    $decryptOutputElement.textContent = "No ciphertext to decrypt.";
+    return;
+  }
+
+  RSA2048Service.decrypt(bobKeyPair.privateKey, ciphertext).subscribe((plaintext) => {
+    $decryptOutputElement.textContent = plaintext;
+  });
 }
 
 // generate key value pair on load

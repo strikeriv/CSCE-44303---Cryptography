@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/styles/global.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css" rel="stylesheet" />
-    <title>AES & RSA Encryption - Part 1</title>
+    <title>RSA 2048-bit - Part 2</title>
   </head>
   <body class="bg-gray-900 text-white">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
@@ -14,7 +14,7 @@
     <div class="flex w-full h-full justify-center items-center flex-col pb-[4rem]">
       <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">RSA 2048-bit Encrypt & Decrypt</h1>
 
-      <div class="flex flex-row w-full h-full gap-[4rem] px-[4rem] pb-[4rem]">
+      <div class="flex flex-row w-full h-full gap-[4rem] px-[4rem] pb-[2rem]">
         <div
           class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
@@ -59,7 +59,7 @@
                 <textarea
                   name="plaintext"
                   id="encrypt-text-input"
-                  rows="4"
+                  rows="2"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 ></textarea>
               </div>
@@ -83,7 +83,7 @@
               >
               <textarea
                 id="encrypt-output"
-                rows="4"
+                rows="8"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 disabled
               ></textarea>
@@ -105,7 +105,7 @@
                 <textarea
                   name="ciphertext"
                   id="decrypt-text-input"
-                  rows="4"
+                  rows="8"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 ></textarea>
               </div>
@@ -129,7 +129,7 @@
               >
               <textarea
                 id="decrypt-output"
-                rows="4"
+                rows="2"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 disabled
               ></textarea>

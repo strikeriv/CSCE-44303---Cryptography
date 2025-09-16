@@ -18,6 +18,26 @@ export const RSA2048Service = {
   decrypt,
 };
 
-function encrypt(): Observable<string> {}
+function encrypt(publicKey: CryptoKey, plaintext: string): Observable<string> {
+  return from(
+    crypto.subtle.encrypt(
+      {
+        name: "RSA-OAEP",
+      },
+      publicKey,
+      new TextEncoder().encode(plaintext)
+    )
+  ).pipe(map((buffer) => btoa(String.fromCharCode(...new Uint8Array(buffer)))));
+}
 
-function decrypt(): Observable<string> {}
+function decrypt(privateKey: CryptoKey, ciphertext: string): Observable<string> {
+  return from(
+    crypto.subtle.decrypt(
+      {
+        name: "RSA-OAEP",
+      },
+      privateKey,
+      Uint8Array.from(atob(ciphertext), (c) => c.charCodeAt(0))
+    )
+  ).pipe(map((buffer) => new TextDecoder().decode(buffer)));
+}

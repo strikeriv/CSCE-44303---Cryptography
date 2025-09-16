@@ -7,7 +7,7 @@ export const AES128Service = {
   decrypt,
 };
 
-function encrypt(iv: string, secretKey: string, ciphertext: string): Observable<string> {
+function encrypt(iv: string, secretKey: string, plaintext: string): Observable<string> {
   const paddedIV = new TextEncoder().encode(iv.padEnd(16, " ")).slice(0, 16); // ensure 16 bytes for AES block size
   const paddedKey = new TextEncoder().encode(secretKey.padEnd(16, " ")).slice(0, 16); // ensure 16 bytes for AES-128
 
@@ -19,7 +19,7 @@ function encrypt(iv: string, secretKey: string, ciphertext: string): Observable<
           iv: paddedIV,
         },
         secretKey,
-        new TextEncoder().encode(ciphertext)
+        new TextEncoder().encode(plaintext)
       )
     ),
     map((buffer) => btoa(String.fromCharCode(...new Uint8Array(buffer))))
