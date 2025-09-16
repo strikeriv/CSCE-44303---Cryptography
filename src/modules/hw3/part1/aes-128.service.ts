@@ -1,6 +1,6 @@
 import { from, map, Observable, switchMap } from "rxjs";
 
-export const HW3Part1Service = {
+export const AES128Service = {
   generateRandomKey: () => crypto.getRandomValues(new Uint8Array(16)),
   generateRandomIV: () => crypto.getRandomValues(new Uint8Array(16)),
   encrypt,
