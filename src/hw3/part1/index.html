@@ -14,35 +14,31 @@
     <div class="flex w-full h-full justify-center items-center flex-col pb-[4rem]">
       <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">AES 128-bit Encrypt & Decrypt</h1>
 
-      <div class="flex flex-row w-full justify-center items-center pb-[2rem] gap-[4rem]">
+      <div class="flex flex-row w-full h-full gap-[4rem] px-[4rem] pb-[4rem]">
         <div
-          class="w-1/2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
-          <div>
-            <label for="secret-key-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Secret Key Input</label
-            >
-            <input
-              type="text"
-              id="secret-key-input"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            />
-          </div>
+          <label for="secret-key-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Secret Key Input</label
+          >
+          <input
+            type="text"
+            id="secret-key-input"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
         </div>
 
         <div
-          class="w-1/2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
-          <div>
-            <label for="iv-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IV Input</label>
-            <input
-              type="text"
-              id="iv-input"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
-            />
-          </div>
+          <label for="iv-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IV Input</label>
+          <input
+            type="text"
+            id="iv-input"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
         </div>
       </div>
 
