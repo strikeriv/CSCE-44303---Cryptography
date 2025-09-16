@@ -1,4 +1,4 @@
-import { from, generate, map, Observable, switchMap } from "rxjs";
+import { from, map, Observable } from "rxjs";
 
 export const RSA2048Service = {
   generateKeyPair: () =>
@@ -12,6 +12,32 @@ export const RSA2048Service = {
         },
         true,
         ["encrypt", "decrypt"]
+      )
+    ),
+  importPublicKey: (publicKey: string) =>
+    from(
+      crypto.subtle.importKey(
+        "spki",
+        base64ToArrayBuffer(publicKey),
+        {
+          name: "RSA-OAEP",
+          hash: "SHA-256",
+        },
+        true,
+        ["encrypt"]
+      )
+    ),
+  importPrivateKey: (privateKey: string) =>
+    from(
+      crypto.subtle.importKey(
+        "pkcs8",
+        base64ToArrayBuffer(privateKey),
+        {
+          name: "RSA-OAEP",
+          hash: "SHA-256",
+        },
+        true,
+        ["decrypt"]
       )
     ),
   encrypt,
@@ -40,4 +66,13 @@ function decrypt(privateKey: CryptoKey, ciphertext: string): Observable<string> 
       Uint8Array.from(atob(ciphertext), (c) => c.charCodeAt(0))
     )
   ).pipe(map((buffer) => new TextDecoder().decode(buffer)));
+}
+
+function base64ToArrayBuffer(base64: string): ArrayBuffer {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
 }

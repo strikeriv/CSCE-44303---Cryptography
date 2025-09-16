@@ -1,4 +1,4 @@
-import { forkJoin, from } from "rxjs";
+import { forkJoin, from, of, switchMap } from "rxjs";
 import { RSA2048Service } from "../../modules/hw3/part2/rsa-2048.service";
 
 declare global {
@@ -18,6 +18,9 @@ interface DecryptInput {
 
 let bobKeyPair: CryptoKeyPair;
 
+let publicKeyReadable: string;
+let privateKeyReadable: string;
+
 const $publicKeyInputElement = document.getElementById("public-key-input") as HTMLInputElement;
 const $privateKeyInputElement = document.getElementById("private-key-input") as HTMLInputElement;
 
@@ -36,7 +39,16 @@ function encrypt(event: SubmitEvent) {
     return;
   }
 
-  RSA2048Service.encrypt(bobKeyPair.publicKey, plaintext).subscribe((ciphertext) => {
+  // check to see if public key input has been changed
+  let publicKey$ = of(bobKeyPair.publicKey);
+
+  const publicKeyInput = $publicKeyInputElement.value;
+  if (publicKeyInput !== publicKeyReadable) {
+    // public key has been changed, use the value from the input
+    publicKey$ = RSA2048Service.importPublicKey(publicKeyInput);
+  }
+
+  publicKey$.pipe(switchMap((publicKey) => RSA2048Service.encrypt(publicKey, plaintext))).subscribe((ciphertext) => {
     $encryptOutputElement.textContent = ciphertext;
   });
 }
@@ -53,7 +65,16 @@ function decrypt(event: SubmitEvent) {
     return;
   }
 
-  RSA2048Service.decrypt(bobKeyPair.privateKey, ciphertext).subscribe((plaintext) => {
+  // check to see if private key input has been changed
+  let privateKey$ = of(bobKeyPair.privateKey);
+
+  const privateKeyInput = $privateKeyInputElement.value;
+  if (privateKeyInput !== privateKeyReadable) {
+    // private key has been changed, use the value from the input
+    privateKey$ = RSA2048Service.importPrivateKey(privateKeyInput);
+  }
+
+  privateKey$.pipe(switchMap((privateKey) => RSA2048Service.decrypt(privateKey, ciphertext))).subscribe((plaintext) => {
     $decryptOutputElement.textContent = plaintext;
   });
 }
@@ -67,8 +88,11 @@ function init() {
       publicKey: from(crypto.subtle.exportKey("spki", keyPair.publicKey)),
       privateKey: from(crypto.subtle.exportKey("pkcs8", keyPair.privateKey)),
     }).subscribe(({ publicKey, privateKey }) => {
-      $publicKeyInputElement.value = btoa(String.fromCharCode(...new Uint8Array(publicKey)));
-      $privateKeyInputElement.value = btoa(String.fromCharCode(...new Uint8Array(privateKey)));
+      publicKeyReadable = btoa(String.fromCharCode(...new Uint8Array(publicKey)));
+      privateKeyReadable = btoa(String.fromCharCode(...new Uint8Array(privateKey)));
+
+      $publicKeyInputElement.value = publicKeyReadable;
+      $privateKeyInputElement.value = privateKeyReadable;
     });
   });
 }
