@@ -7,6 +7,7 @@ export default defineConfig({
   root: 'src',
   plugins: [tailwindcss(), nodePolyfills()],
   build: {
+    outDir: '../dist',
     rollupOptions: {
       input: {
         main: 'src/index.html',
