@@ -4,6 +4,7 @@ import {
   last,
   map,
   Observable,
+  of,
   range,
   switchMap,
 } from 'rxjs';
@@ -22,8 +23,9 @@ declare global {
   }
 }
 
-interface EncryptInput {
-  plaintext: string;
+interface IterationPerformance {
+  encrypt: TimeResult;
+  decrypt: TimeResult;
 }
 
 interface TimeResult {
@@ -67,11 +69,11 @@ function startIterations(event: SubmitEvent) {
   // run # iterations for each AES key size
   return forkJoin([
     iterateAES('aes-128-cbc', iterations, aesIV, plaintext, 16),
-    iterateAES('aes-192-cbc', iterations, aesIV, plaintext, 24),
-    iterateAES('aes-256-cbc', iterations, aesIV, plaintext, 32),
-    iterateRSA(1024, iterations, plaintext),
-    iterateRSA(2048, iterations, plaintext),
-    iterateRSA(4096, iterations, plaintext),
+    // iterateAES('aes-192-cbc', iterations, aesIV, plaintext, 24),
+    // iterateAES('aes-256-cbc', iterations, aesIV, plaintext, 32),
+    // iterateRSA(1024, iterations, plaintext),
+    // iterateRSA(2048, iterations, plaintext),
+    // iterateRSA(4096, iterations, plaintext),
   ]).subscribe((results) => {
     console.log(results, 'results');
   });
@@ -83,21 +85,45 @@ function iterateAES(
   iv: BinaryLike,
   plaintext: string,
   keySize: AESKeySize
-): Observable<TimeResult> {
+): Observable<IterationPerformance> {
   const startTime = performance.now();
 
   const secretKey = AESService.generateRandomKey(keySize);
 
-  return range(0, iterations).pipe(
-    concatMap(() => AESService.encrypt(algorithm, secretKey, iv, plaintext)),
+  const $encrypt = range(0, iterations).pipe(
+    concatMap(() =>
+      of(AESService.encrypt(algorithm, secretKey, iv, plaintext))
+    ),
     last(),
-    map(() => {
+    map((ciphertext) => {
       const endTime = performance.now();
       const totalTime = endTime - startTime;
       const avgTime = totalTime / iterations;
-      return { totalTime, avgTime };
+      return { totalTime, avgTime, lastCiphertext: ciphertext }; // need the ciphertext cause the decrypt fails without it ;/
     })
   );
+
+  const $decrypt = $encrypt.pipe(
+    concatMap(({ lastCiphertext }) =>
+      range(0, iterations).pipe(
+        concatMap(() =>
+          of(AESService.decrypt(algorithm, secretKey, iv, lastCiphertext))
+        ),
+        last(),
+        map(() => {
+          const endTime = performance.now();
+          const totalTime = endTime - startTime;
+          const avgTime = totalTime / iterations;
+          return { totalTime, avgTime };
+        })
+      )
+    )
+  );
+
+  return forkJoin({
+    encrypt: $encrypt,
+    decrypt: $decrypt,
+  });
 }
 
 function iterateRSA(
