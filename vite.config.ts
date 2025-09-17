@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: 'src/index.html',
         hw1: 'src/hw1/index.html',
+        hw3: 'src/hw3/index.html',
       },
     },
   },
