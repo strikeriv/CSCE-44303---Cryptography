@@ -8,9 +8,21 @@ declare global {
   }
 }
 
+const basePerformanceText = 'Encrypt & Run 100 Iterations';
+
 const $plaintextElement = document.getElementById(
   'plaintext-input'
 ) as HTMLInputElement;
+
+const $performanceButton = document.getElementById(
+  'performance-button'
+) as HTMLButtonElement;
+const $performanceSpinner = document.getElementById(
+  'performance-spinner'
+) as unknown as SVGSVGElement;
+const $performanceText = document.getElementById(
+  'performance-text'
+) as HTMLSpanElement;
 
 // spans for AES
 const $aes128EncryptElement = document.getElementById(
@@ -63,11 +75,21 @@ function startIterations(event: SubmitEvent) {
   const aesIV = AESService.generateRandomIV();
   const plaintext = $plaintextElement.value;
 
+  // show loading spinner on button
+  $performanceSpinner.classList.remove('hidden');
+  $performanceText.textContent = 'Running...';
+  $performanceButton.disabled = true;
+
   return forkJoin([
     ...PerformanceService.iterateAES(iterations, aesIV, plaintext),
     ...PerformanceService.iterateRSA(iterations, plaintext),
   ]).subscribe((results) => {
     const [aes128, aes192, aes256, rsa1024, rsa2048, rsa4096] = results;
+
+    // set button back to normal
+    $performanceSpinner.classList.add('hidden');
+    $performanceText.textContent = basePerformanceText;
+    $performanceButton.disabled = false;
 
     $aes128EncryptElement.textContent = `${aes128.encrypt.averageTime}ms`;
     $aes128DecryptElement.textContent = `${aes128.decrypt.averageTime}ms`;
@@ -88,5 +110,7 @@ function startIterations(event: SubmitEvent) {
     $rsa4096DecryptElement.textContent = `${rsa4096.decrypt.averageTime}ms`;
   });
 }
+
+$performanceText.textContent = basePerformanceText;
 
 window.startIterations = startIterations;
