@@ -2,10 +2,11 @@
 
 This repo contains my solutions to projects within the CSCE 44303 class.
 
-## Running a Project
+## Running the Project
 
-To run a project, follow these steps:
+To run the project, follow these steps:
 
-- `cd` to the correct folder
 - `bun install` to install the required packages
-- `npm run dev` to start the program
+- `bun run dev` to start the program
+
+You can now navigate to each of the different projects.
