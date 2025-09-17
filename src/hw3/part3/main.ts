@@ -1,21 +1,6 @@
-import {
-  concatMap,
-  forkJoin,
-  last,
-  map,
-  Observable,
-  of,
-  range,
-  switchMap,
-} from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { AESService } from '../../modules/hw3/part1/aes.service';
-import type {
-  AESAlgorithm,
-  AESKeySize,
-} from '../../modules/hw3/part1/aes.types';
-import type { BinaryLike } from 'crypto';
-import { RSAService } from '../../modules/hw3/part2/rsa.service';
-import type { RSAModulusLength } from '../../modules/hw3/part2/rsa.types';
+import { PerformanceService } from '../../modules/hw3/part3/performance.service';
 
 declare global {
   interface Window {
@@ -23,137 +8,85 @@ declare global {
   }
 }
 
-interface IterationPerformance {
-  encrypt: TimeResult;
-  decrypt: TimeResult;
-}
+const $plaintextElement = document.getElementById(
+  'plaintext-input'
+) as HTMLInputElement;
 
-interface TimeResult {
-  totalTime: number;
-  avgTime: number;
-}
-
-// spans for RSA
+// spans for AES
 const $aes128EncryptElement = document.getElementById(
   'aes-128-encrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
 const $aes128DecryptElement = document.getElementById(
   'aes-128-decrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
 
 const $aes192EncryptElement = document.getElementById(
   'aes-192-encrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
 const $aes192DecryptElement = document.getElementById(
   'aes-192-decrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
 
 const $aes256EncryptElement = document.getElementById(
   'aes-256-encrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
 const $aes256DecryptElement = document.getElementById(
   'aes-256-decrypt-span'
-) as HTMLInputElement;
+) as HTMLSpanElement;
+
+// spans for RSA
+const $rsa1024EncryptElement = document.getElementById(
+  'rsa-1024-encrypt-span'
+) as HTMLSpanElement;
+const $rsa1024DecryptElement = document.getElementById(
+  'rsa-1024-decrypt-span'
+) as HTMLSpanElement;
+
+const $rsa2048EncryptElement = document.getElementById(
+  'rsa-2048-encrypt-span'
+) as HTMLSpanElement;
+const $rsa2048DecryptElement = document.getElementById(
+  'rsa-2048-decrypt-span'
+) as HTMLSpanElement;
+
+const $rsa4096EncryptElement = document.getElementById(
+  'rsa-4096-encrypt-span'
+) as HTMLSpanElement;
+const $rsa4096DecryptElement = document.getElementById(
+  'rsa-4096-decrypt-span'
+) as HTMLSpanElement;
 
 function startIterations(event: SubmitEvent) {
   event.preventDefault();
 
-  console.log('here!');
   const iterations = 100;
-
   const aesIV = AESService.generateRandomIV();
+  const plaintext = $plaintextElement.value;
 
-  const plaintext =
-    'Sample plaintext for AES & RSA encryption performance testing.';
-
-  // run # iterations for each AES key size
   return forkJoin([
-    iterateAES('aes-128-cbc', iterations, aesIV, plaintext, 16),
-    // iterateAES('aes-192-cbc', iterations, aesIV, plaintext, 24),
-    // iterateAES('aes-256-cbc', iterations, aesIV, plaintext, 32),
-    // iterateRSA(1024, iterations, plaintext),
-    // iterateRSA(2048, iterations, plaintext),
-    // iterateRSA(4096, iterations, plaintext),
+    ...PerformanceService.iterateAES(iterations, aesIV, plaintext),
+    ...PerformanceService.iterateRSA(iterations, plaintext),
   ]).subscribe((results) => {
-    console.log(results, 'results');
+    const [aes128, aes192, aes256, rsa1024, rsa2048, rsa4096] = results;
+
+    $aes128EncryptElement.textContent = `${aes128.encrypt.averageTime}ms`;
+    $aes128DecryptElement.textContent = `${aes128.decrypt.averageTime}ms`;
+
+    $aes192EncryptElement.textContent = `${aes192.encrypt.averageTime}ms`;
+    $aes192DecryptElement.textContent = `${aes192.decrypt.averageTime}ms`;
+
+    $aes256EncryptElement.textContent = `${aes256.encrypt.averageTime}ms`;
+    $aes256DecryptElement.textContent = `${aes256.decrypt.averageTime}ms`;
+
+    $rsa1024EncryptElement.textContent = `${rsa1024.encrypt.averageTime}ms`;
+    $rsa1024DecryptElement.textContent = `${rsa1024.decrypt.averageTime}ms`;
+
+    $rsa2048EncryptElement.textContent = `${rsa2048.encrypt.averageTime}ms`;
+    $rsa2048DecryptElement.textContent = `${rsa2048.decrypt.averageTime}ms`;
+
+    $rsa4096EncryptElement.textContent = `${rsa4096.encrypt.averageTime}ms`;
+    $rsa4096DecryptElement.textContent = `${rsa4096.decrypt.averageTime}ms`;
   });
 }
-
-function iterateAES(
-  algorithm: AESAlgorithm,
-  iterations: number,
-  iv: BinaryLike,
-  plaintext: string,
-  keySize: AESKeySize
-): Observable<IterationPerformance> {
-  const startTime = performance.now();
-
-  const secretKey = AESService.generateRandomKey(keySize);
-
-  const $encrypt = range(0, iterations).pipe(
-    concatMap(() =>
-      of(AESService.encrypt(algorithm, secretKey, iv, plaintext))
-    ),
-    last(),
-    map((ciphertext) => {
-      const endTime = performance.now();
-      const totalTime = endTime - startTime;
-      const avgTime = totalTime / iterations;
-      return { totalTime, avgTime, lastCiphertext: ciphertext }; // need the ciphertext cause the decrypt fails without it ;/
-    })
-  );
-
-  const $decrypt = $encrypt.pipe(
-    concatMap(({ lastCiphertext }) =>
-      range(0, iterations).pipe(
-        concatMap(() =>
-          of(AESService.decrypt(algorithm, secretKey, iv, lastCiphertext))
-        ),
-        last(),
-        map(() => {
-          const endTime = performance.now();
-          const totalTime = endTime - startTime;
-          const avgTime = totalTime / iterations;
-          return { totalTime, avgTime };
-        })
-      )
-    )
-  );
-
-  return forkJoin({
-    encrypt: $encrypt,
-    decrypt: $decrypt,
-  });
-}
-
-function iterateRSA(
-  modulusLength: RSAModulusLength,
-  iterations: number,
-  plaintext: string
-): Observable<TimeResult> {
-  const startTime = performance.now();
-
-  return RSAService.generateKeyPair(modulusLength).pipe(
-    switchMap((keyPair) =>
-      range(0, iterations).pipe(
-        concatMap(() => RSAService.encrypt(keyPair.publicKey, plaintext)),
-        last(),
-        map(() => {
-          const endTime = performance.now();
-          const totalTime = endTime - startTime;
-          const avgTime = totalTime / iterations;
-          return { totalTime, avgTime };
-        })
-      )
-    )
-  );
-}
-
-// const $privateKeyInputElement = document.getElementById("private-key-input") as HTMLInputElement;
-
-// const $encryptOutputElement = document.getElementById("encrypt-output") as HTMLTextAreaElement;
-// const $decryptOutputElement = document.getElementById("decrypt-output") as HTMLTextAreaElement;
-
-$aes128EncryptElement.textContent = 'N/A';
 
 window.startIterations = startIterations;
