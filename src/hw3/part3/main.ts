@@ -1,10 +1,20 @@
-import { concatMap, forkJoin, last, map, range } from 'rxjs';
+import {
+  concatMap,
+  forkJoin,
+  last,
+  map,
+  Observable,
+  range,
+  switchMap,
+} from 'rxjs';
 import { AESService } from '../../modules/hw3/part1/aes.service';
 import type {
   AESAlgorithm,
   AESKeySize,
 } from '../../modules/hw3/part1/aes.types';
 import type { BinaryLike } from 'crypto';
+import { RSAService } from '../../modules/hw3/part2/rsa.service';
+import type { RSAModulusLength } from '../../modules/hw3/part2/rsa.types';
 
 declare global {
   interface Window {
@@ -14,6 +24,11 @@ declare global {
 
 interface EncryptInput {
   plaintext: string;
+}
+
+interface TimeResult {
+  totalTime: number;
+  avgTime: number;
 }
 
 // spans for RSA
@@ -54,6 +69,9 @@ function startIterations(event: SubmitEvent) {
     iterateAES('aes-128-cbc', iterations, aesIV, plaintext, 16),
     iterateAES('aes-192-cbc', iterations, aesIV, plaintext, 24),
     iterateAES('aes-256-cbc', iterations, aesIV, plaintext, 32),
+    iterateRSA(1024, iterations, plaintext),
+    iterateRSA(2048, iterations, plaintext),
+    iterateRSA(4096, iterations, plaintext),
   ]).subscribe((results) => {
     console.log(results, 'results');
   });
@@ -65,20 +83,43 @@ function iterateAES(
   iv: BinaryLike,
   plaintext: string,
   keySize: AESKeySize
-) {
+): Observable<TimeResult> {
   const startTime = performance.now();
 
   const secretKey = AESService.generateRandomKey(keySize);
 
   return range(0, iterations).pipe(
     concatMap(() => AESService.encrypt(algorithm, secretKey, iv, plaintext)),
-    last(), // wait until all iterations are done
+    last(),
     map(() => {
       const endTime = performance.now();
       const totalTime = endTime - startTime;
       const avgTime = totalTime / iterations;
       return { totalTime, avgTime };
     })
+  );
+}
+
+function iterateRSA(
+  modulusLength: RSAModulusLength,
+  iterations: number,
+  plaintext: string
+): Observable<TimeResult> {
+  const startTime = performance.now();
+
+  return RSAService.generateKeyPair(modulusLength).pipe(
+    switchMap((keyPair) =>
+      range(0, iterations).pipe(
+        concatMap(() => RSAService.encrypt(keyPair.publicKey, plaintext)),
+        last(),
+        map(() => {
+          const endTime = performance.now();
+          const totalTime = endTime - startTime;
+          const avgTime = totalTime / iterations;
+          return { totalTime, avgTime };
+        })
+      )
+    )
   );
 }
 

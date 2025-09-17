@@ -1,7 +1,7 @@
 import { from, map, Observable } from 'rxjs';
 import type { RSAModulusLength } from './rsa.types';
 
-export const RSA2048Service = {
+export const RSAService = {
   generateKeyPair: (modulusLength: RSAModulusLength) =>
     from(
       crypto.subtle.generateKey(

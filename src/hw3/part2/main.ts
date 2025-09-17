@@ -1,5 +1,5 @@
 import { forkJoin, from, of, switchMap } from 'rxjs';
-import { RSA2048Service } from '../../modules/hw3/part2/rsa.service';
+import { RSAService } from '../../modules/hw3/part2/rsa.service';
 
 declare global {
   interface Window {
@@ -53,13 +53,11 @@ function encrypt(event: SubmitEvent) {
   const publicKeyInput = $publicKeyInputElement.value;
   if (publicKeyInput !== publicKeyReadable) {
     // public key has been changed, use the value from the input
-    publicKey$ = RSA2048Service.importPublicKey(publicKeyInput);
+    publicKey$ = RSAService.importPublicKey(publicKeyInput);
   }
 
   publicKey$
-    .pipe(
-      switchMap((publicKey) => RSA2048Service.encrypt(publicKey, plaintext))
-    )
+    .pipe(switchMap((publicKey) => RSAService.encrypt(publicKey, plaintext)))
     .subscribe((ciphertext) => {
       $encryptOutputElement.textContent = ciphertext;
     });
@@ -85,13 +83,11 @@ function decrypt(event: SubmitEvent) {
   const privateKeyInput = $privateKeyInputElement.value;
   if (privateKeyInput !== privateKeyReadable) {
     // private key has been changed, use the value from the input
-    privateKey$ = RSA2048Service.importPrivateKey(privateKeyInput);
+    privateKey$ = RSAService.importPrivateKey(privateKeyInput);
   }
 
   privateKey$
-    .pipe(
-      switchMap((privateKey) => RSA2048Service.decrypt(privateKey, ciphertext))
-    )
+    .pipe(switchMap((privateKey) => RSAService.decrypt(privateKey, ciphertext)))
     .subscribe((plaintext) => {
       $decryptOutputElement.textContent = plaintext;
     });
@@ -99,7 +95,7 @@ function decrypt(event: SubmitEvent) {
 
 // generate key value pair on load
 function init() {
-  RSA2048Service.generateKeyPair(1024).subscribe((keyPair) => {
+  RSAService.generateKeyPair(1024).subscribe((keyPair) => {
     bobKeyPair = keyPair;
 
     forkJoin({
