@@ -1,4 +1,4 @@
-import { AESService } from "../../modules/hw3/part1/aes.service";
+import { AESService } from '../../modules/hw3/part1/aes.service';
 
 declare global {
   interface Window {
@@ -15,14 +15,20 @@ interface DecryptInput {
   ciphertext: string;
 }
 
-const randomKey = btoa(String.fromCharCode(...AESService.generateRandomKey(16)));
-const randomIV = btoa(String.fromCharCode(...AESService.generateRandomIV()));
+const randomKey = AESService.generateRandomKey(16);
+const randomIV = AESService.generateRandomIV();
 
-const $secretKeyInputElement = document.getElementById("secret-key-input") as HTMLInputElement;
-const $ivInputElement = document.getElementById("iv-input") as HTMLInputElement;
+const $secretKeyInputElement = document.getElementById(
+  'secret-key-input'
+) as HTMLInputElement;
+const $ivInputElement = document.getElementById('iv-input') as HTMLInputElement;
 
-const $encryptOutputElement = document.getElementById("encrypt-output") as HTMLTextAreaElement;
-const $decryptOutputElement = document.getElementById("decrypt-output") as HTMLTextAreaElement;
+const $encryptOutputElement = document.getElementById(
+  'encrypt-output'
+) as HTMLTextAreaElement;
+const $decryptOutputElement = document.getElementById(
+  'decrypt-output'
+) as HTMLTextAreaElement;
 
 function encrypt(event: SubmitEvent) {
   event.preventDefault();
@@ -32,7 +38,7 @@ function encrypt(event: SubmitEvent) {
   const { plaintext } = Object.fromEntries(formData) as unknown as EncryptInput;
 
   if (!plaintext) {
-    $encryptOutputElement.textContent = "No plaintext to encrypt.";
+    $encryptOutputElement.textContent = 'No plaintext to encrypt.';
     return;
   }
 
@@ -42,20 +48,23 @@ function encrypt(event: SubmitEvent) {
   const secretKeyInput = $secretKeyInputElement.value;
   const ivInput = $ivInputElement.value;
 
-  if (secretKeyInput !== randomKey) {
+  if (secretKeyInput !== AESService.toHex(randomKey)) {
     // secret key has been changed, use the value from the input
-    secretKey = secretKeyInput;
+    secretKey = Buffer.from(secretKeyInput, 'hex');
   }
 
-  if (ivInput !== randomIV) {
+  if (ivInput !== AESService.toHex(randomIV)) {
     // iv has been changed, use the value from the input
-    iv = ivInput;
+    iv = Buffer.from(ivInput, 'hex');
   }
 
   // we can do this because the key and iv are pre-filled on page load
-  AESService.encrypt(iv, secretKey, plaintext, 16).subscribe((encryptedText) => {
-    $encryptOutputElement.textContent = encryptedText;
-  });
+  $encryptOutputElement.textContent = AESService.encrypt(
+    'aes-128-cbc',
+    secretKey,
+    iv,
+    plaintext
+  );
 }
 
 function decrypt(event: SubmitEvent) {
@@ -63,10 +72,12 @@ function decrypt(event: SubmitEvent) {
 
   const form = event.target! as HTMLFormElement;
   const formData = new FormData(form);
-  const { ciphertext } = Object.fromEntries(formData) as unknown as DecryptInput;
+  const { ciphertext } = Object.fromEntries(
+    formData
+  ) as unknown as DecryptInput;
 
   if (!ciphertext) {
-    $decryptOutputElement.textContent = "No ciphertext to decrypt.";
+    $decryptOutputElement.textContent = 'No ciphertext to decrypt.';
     return;
   }
 
@@ -76,25 +87,28 @@ function decrypt(event: SubmitEvent) {
   const secretKeyInput = $secretKeyInputElement.value;
   const ivInput = $ivInputElement.value;
 
-  if (secretKeyInput !== randomKey) {
+  if (secretKeyInput !== AESService.toHex(randomKey)) {
     // secret key has been changed, use the value from the input
-    secretKey = secretKeyInput;
+    secretKey = Buffer.from(secretKeyInput, 'hex');
   }
 
-  if (ivInput !== randomIV) {
+  if (ivInput !== AESService.toHex(randomIV)) {
     // iv has been changed, use the value from the input
-    iv = ivInput;
+    iv = Buffer.from(ivInput, 'hex');
   }
 
   // we can do this because the key and iv are pre-filled on page load
-  AESService.decrypt(iv, secretKey, ciphertext, 16).subscribe((encryptedText) => {
-    $decryptOutputElement.textContent = encryptedText;
-  });
+  $decryptOutputElement.textContent = AESService.decrypt(
+    'aes-128-cbc',
+    secretKey,
+    iv,
+    ciphertext
+  );
 }
 
 // generate random key and iv on page load
-$secretKeyInputElement.value = randomKey;
-$ivInputElement.value = randomIV;
+$secretKeyInputElement.value = AESService.toHex(randomKey);
+$ivInputElement.value = AESService.toHex(randomIV);
 
 window.encrypt = encrypt;
 window.decrypt = decrypt;
