@@ -99,7 +99,7 @@ function decrypt(event: SubmitEvent) {
 
 // generate key value pair on load
 function init() {
-  RSA2048Service.generateKeyPair().subscribe((keyPair) => {
+  RSA2048Service.generateKeyPair(1024).subscribe((keyPair) => {
     bobKeyPair = keyPair;
 
     forkJoin({

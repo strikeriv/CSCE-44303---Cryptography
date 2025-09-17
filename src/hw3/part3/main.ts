@@ -1,7 +1,10 @@
 import { concatMap, forkJoin, last, map, range } from 'rxjs';
 import { AESService } from '../../modules/hw3/part1/aes.service';
-import type { AESKeySize } from '../../modules/hw3/part1/aes.types';
-import { AES192Service } from '../../modules/hw3/part3/aes-192.service';
+import type {
+  AESAlgorithm,
+  AESKeySize,
+} from '../../modules/hw3/part1/aes.types';
+import type { BinaryLike } from 'crypto';
 
 declare global {
   interface Window {
@@ -41,53 +44,34 @@ function startIterations(event: SubmitEvent) {
   console.log('here!');
   const iterations = 100;
 
-  const aesIV = btoa(String.fromCharCode(...AESService.generateRandomIV()));
+  const aesIV = AESService.generateRandomIV();
 
   const plaintext =
     'Sample plaintext for AES & RSA encryption performance testing.';
 
   // run # iterations for each AES key size
   return forkJoin([
-    iterateAES(iterations, aesIV, plaintext, 16),
-    iterateAES192(iterations, aesIV, plaintext),
-    iterateAES(iterations, aesIV, plaintext, 32),
+    iterateAES('aes-128-cbc', iterations, aesIV, plaintext, 16),
+    iterateAES('aes-192-cbc', iterations, aesIV, plaintext, 24),
+    iterateAES('aes-256-cbc', iterations, aesIV, plaintext, 32),
   ]).subscribe((results) => {
     console.log(results, 'results');
   });
 }
 
 function iterateAES(
+  algorithm: AESAlgorithm,
   iterations: number,
-  iv: string,
+  iv: BinaryLike,
   plaintext: string,
   keySize: AESKeySize
 ) {
   const startTime = performance.now();
 
-  const secretKey = btoa(
-    String.fromCharCode(...AESService.generateRandomKey(keySize))
-  );
+  const secretKey = AESService.generateRandomKey(keySize);
 
   return range(0, iterations).pipe(
-    concatMap(() => AESService.encrypt(iv, secretKey, plaintext, keySize)),
-    last(), // wait until all iterations are done
-    map(() => {
-      const endTime = performance.now();
-      const totalTime = endTime - startTime;
-      const avgTime = totalTime / iterations;
-      return { totalTime, avgTime };
-    })
-  );
-}
-
-// seperate algorithm
-function iterateAES192(iterations: number, iv: string, plaintext: string) {
-  const startTime = performance.now();
-
-  return range(0, iterations).pipe(
-    concatMap(() =>
-      AES192Service.encrypt(Buffer.from(iv, 'base64'), plaintext)
-    ),
+    concatMap(() => AESService.encrypt(algorithm, secretKey, iv, plaintext)),
     last(), // wait until all iterations are done
     map(() => {
       const endTime = performance.now();
