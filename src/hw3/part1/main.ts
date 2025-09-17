@@ -1,4 +1,4 @@
-import { AES128Service } from "../../modules/hw3/part1/aes-128.service";
+import { AESService } from "../../modules/hw3/part1/aes.service";
 
 declare global {
   interface Window {
@@ -15,8 +15,8 @@ interface DecryptInput {
   ciphertext: string;
 }
 
-const randomKey = btoa(String.fromCharCode(...AES128Service.generateRandomKey()));
-const randomIV = btoa(String.fromCharCode(...AES128Service.generateRandomIV()));
+const randomKey = btoa(String.fromCharCode(...AESService.generateRandomKey(16)));
+const randomIV = btoa(String.fromCharCode(...AESService.generateRandomIV()));
 
 const $secretKeyInputElement = document.getElementById("secret-key-input") as HTMLInputElement;
 const $ivInputElement = document.getElementById("iv-input") as HTMLInputElement;
@@ -53,7 +53,7 @@ function encrypt(event: SubmitEvent) {
   }
 
   // we can do this because the key and iv are pre-filled on page load
-  AES128Service.encrypt(iv, secretKey, plaintext).subscribe((encryptedText) => {
+  AESService.encrypt(iv, secretKey, plaintext, 16).subscribe((encryptedText) => {
     $encryptOutputElement.textContent = encryptedText;
   });
 }
@@ -87,7 +87,7 @@ function decrypt(event: SubmitEvent) {
   }
 
   // we can do this because the key and iv are pre-filled on page load
-  AES128Service.decrypt(iv, secretKey, ciphertext).subscribe((encryptedText) => {
+  AESService.decrypt(iv, secretKey, ciphertext, 16).subscribe((encryptedText) => {
     $decryptOutputElement.textContent = encryptedText;
   });
 }
