@@ -4,7 +4,7 @@ import {
   randomBytes,
   type BinaryLike,
   type CipherKey,
-} from 'crypto';
+} from 'node:crypto';
 import type { AESAlgorithm, AESKeySize } from './aes.types';
 
 export const AESService = {
