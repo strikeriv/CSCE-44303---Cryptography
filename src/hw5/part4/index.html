@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/styles/global.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <title>Hash Collisions & Birthday Paradox - Part 4</title>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
+    <script type="module" src="/hw5/part4/main.ts"></script>
+
+    <div
+      class="flex w-full h-full justify-center items-center flex-col pb-[4rem]"
+    >
+      <h1 class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]">
+        Hash Collisions & Birthday Paradox - Part 4
+      </h1>
+
+      <div class="flex flex-row w-full h-full">
+        <div class="flex flex-col w-1/2 items-center">
+          <h1
+            class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]"
+          >
+            4a - Hash Collisions
+          </h1>
+
+          <div class="w-full gap-[4rem] px-[4rem] pb-[2rem]">
+            <div class="w-full">
+              <form
+                onsubmit="startHashCollisions(event)"
+                class="flex items-center justify-center w-full"
+              >
+                <button
+                  type="submit"
+                  id="collsion-button"
+                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center justify-center gap-2"
+                >
+                  <svg
+                    id="collsion-spinner"
+                    class="w-5 h-5 text-white animate-spin hidden"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                  <span id="collsion-text">Find Same Hash Values</span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div
+            class="flex flex-col w-full h-full gap-[2rem] px-[4rem] pb-[4rem] justify-center"
+          >
+            <div
+              class="w-full h-min p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+            >
+              <div class="flex flex-col w-full h-full space-y-6">
+                <div>
+                  <label
+                    for="collisions-iterations-output"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    ># iterations to find match</label
+                  >
+                  <span id="collisions-iterations-output">N/A</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="w-full h-min p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+            >
+              <div class="flex flex-col w-full h-full space-y-2">
+                <div>
+                  <label
+                    for="first-message-output"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >First Match - Message</label
+                  >
+                  <span id="first-message-output">N/A</span>
+                </div>
+
+                <div>
+                  <label
+                    for="first-hash-output"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >First Match - Hash</label
+                  >
+                  <span id="first-hash-output">N/A</span>
+                </div>
+                <div>
+                  <label
+                    for="second-message-output"
+                    class="space-y-4 block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Second Match - Message</label
+                  >
+                  <span id="second-message-output">N/A</span>
+                </div>
+
+                <div>
+                  <label
+                    for="second-hash-output"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Second Match - Hash</label
+                  >
+                  <span id="second-hash-output">N/A</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-1/2 items-center">
+          <h1
+            class="text-3xl font-medium text-gray-900 dark:text-white p-[4rem]"
+          >
+            4b - Birthday Paradox
+          </h1>
+
+          <div class="w-full gap-[4rem] px-[4rem] pb-[2rem]">
+            <div class="w-full">
+              <form
+                onsubmit="startHashCollisionIterations(event)"
+                class="flex items-center justify-center w-full"
+              >
+                <button
+                  type="submit"
+                  id="iteration-button"
+                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center justify-center gap-2"
+                >
+                  <svg
+                    id="iteration-spinner"
+                    class="w-5 h-5 text-white animate-spin hidden"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                  <span id="iteration-text">Compute 20 iterations</span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div
+            class="flex flex-col w-full h-full gap-[2rem] px-[4rem] pb-[4rem] justify-center"
+          >
+            <div
+              class="w-full h-min p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+            >
+              <div class="flex flex-col w-full h-full space-y-6">
+                <div>
+                  <label
+                    for="bparadox-iterations-output"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Average truials for match</label
+                  >
+                  <span id="bparadox-iterations-output">N/A</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
