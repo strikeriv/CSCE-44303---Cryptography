@@ -1,7 +1,3 @@
-import { forkJoin } from 'rxjs';
-import { HMACSHAService } from '../../modules/hw5/part1/hmac-sha.service';
-import { DSRSA2048Service } from '../../modules/hw5/part2/ds-rsa.service';
-import { PerformanceService } from '../../modules/hw5/part3/performance.service';
 import { CollisionService } from '../../modules/hw5/part4/collision.service';
 
 declare global {
