@@ -61,7 +61,7 @@ function generateHMAC(event: SubmitEvent) {
   }
 
   const hmac = HMACSHAService.generateHMAC(
-    16,
+    18,
     secretKey,
     $signatureMessageInputAlice.value
   );

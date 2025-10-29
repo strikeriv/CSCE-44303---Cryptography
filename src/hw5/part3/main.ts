@@ -36,11 +36,12 @@ async function startIterations(event: SubmitEvent) {
     return;
   }
 
-  console.log(message);
   // must check message buffer here for message limitation
   const buffer = Buffer.from(message, 'utf-8');
   if (buffer.length !== 7) {
-    return 'message-invalid';
+    $hmacOutput.textContent = 'Message is not 7-bit.';
+    $rsaSignatureOutput.textContent = 'Message is not 7-bit.';
+    $rsaVerifyOutput.textContent = 'Message is not 7-bit.';
   }
 
   const iterations = 100;

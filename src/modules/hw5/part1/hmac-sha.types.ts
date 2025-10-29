@@ -1,1 +1,1 @@
-export type MessageSize = 7 | 16;
+export type MessageSize = 7 | 18;
