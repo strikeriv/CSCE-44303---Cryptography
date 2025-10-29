@@ -1,6 +1,7 @@
+import type { MessageSize } from './ds-rsa.types';
+
 const subtleCrypto = window.crypto.subtle;
 
-const MESSAGE_LENGTH = 18;
 const RSA_ALGORITHM = 'RSASSA-PKCS1-v1_5';
 const HASH_ALGORITHM = 'SHA-256';
 const MODULUS_LENGTH = 2048;
@@ -35,13 +36,14 @@ async function generateKeys() {
 }
 
 async function signMessage(
+  messageSize: MessageSize,
   privateKey: string,
   message: string
 ): Promise<string> {
   const encoder = new TextEncoder();
   const messageBuffer = encoder.encode(message);
 
-  if (messageBuffer.byteLength !== MESSAGE_LENGTH) {
+  if (messageBuffer.byteLength !== messageSize) {
     return 'message-invalid';
   }
 

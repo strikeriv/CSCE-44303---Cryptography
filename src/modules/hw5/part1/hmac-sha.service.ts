@@ -1,4 +1,5 @@
 import { createHmac, randomBytes } from 'node:crypto';
+import type { MessageSize } from './hmac-sha.types';
 
 export const HMACSHAService = {
   generateRandomKey: () => randomBytes(16),
@@ -7,7 +8,11 @@ export const HMACSHAService = {
   toHex,
 };
 
-function generateHMAC(key: Buffer<ArrayBufferLike>, message: string): string {
+function generateHMAC(
+  messageSize: MessageSize,
+  key: Buffer<ArrayBufferLike>,
+  message: string
+): string {
   const buffer = Buffer.from(message, 'utf-8');
 
   // check key for requirement
@@ -16,7 +21,7 @@ function generateHMAC(key: Buffer<ArrayBufferLike>, message: string): string {
   }
 
   // check if 18 bit for requirement
-  if (buffer.length !== 18) {
+  if (buffer.length !== messageSize) {
     return 'message-invalid';
   }
 

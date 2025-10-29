@@ -1,129 +1,69 @@
+import { forkJoin } from 'rxjs';
+import { HMACSHAService } from '../../modules/hw5/part1/hmac-sha.service';
 import { DSRSA2048Service } from '../../modules/hw5/part2/ds-rsa.service';
+import { PerformanceService } from '../../modules/hw5/part3/performance.service';
 
 declare global {
   interface Window {
-    signMessage: (event: SubmitEvent) => void;
-    verify: (event: SubmitEvent) => void;
+    startIterations: (event: SubmitEvent) => void;
   }
 }
 
-interface EncryptInput {
-  message: string;
-}
-
-interface DecryptInput {
-  message: string;
-  signature: string;
-}
-
-let aliceKeys: {
-  publicKey: string;
-  privateKey: string;
-};
-
-const $publicKeyInput = document.getElementById(
-  'public-key-input'
-) as HTMLInputElement;
-const $privateKeyInput = document.getElementById(
-  'private-key-input'
+const $messageInput = document.getElementById(
+  'message-input'
 ) as HTMLInputElement;
 
-const $signatureMessageInputAlice = document.getElementById(
-  'signature-message-input-alice'
+const $hmacOutput = document.getElementById(
+  'hmac-gen-time-input'
 ) as HTMLInputElement;
-const $signatureMessageInputBob = document.getElementById(
-  'signature-message-input-bob'
+const $rsaSignatureOutput = document.getElementById(
+  'rsa-signature-gen-time-input'
 ) as HTMLInputElement;
-const $signatureInput = document.getElementById(
-  'signature-input'
-) as HTMLInputElement;
-
-const $signatureOutput = document.getElementById(
-  'signature-output'
-) as HTMLInputElement;
-const $verifyOutput = document.getElementById(
-  'verify-output'
+const $rsaVerifyOutput = document.getElementById(
+  'rsa-verification-time-input'
 ) as HTMLInputElement;
 
-async function signMessage(event: SubmitEvent) {
+async function startIterations(event: SubmitEvent) {
   event.preventDefault();
 
-  const form = event.target! as HTMLFormElement;
-  const formData = new FormData(form);
-  const { message } = Object.fromEntries(formData) as unknown as EncryptInput;
+  const message = $messageInput.value;
 
   if (!message) {
-    $signatureOutput.textContent = 'No message to generate signature from.';
+    $hmacOutput.textContent = 'No message to iterate from.';
+    $rsaSignatureOutput.textContent = 'No message to iterate from.';
+    $rsaVerifyOutput.textContent = 'No message to iterate from.';
+
     return;
   }
 
-  let privateKey = aliceKeys.privateKey;
-
-  const privateKeyInput = $privateKeyInput.value;
-
-  // check key
-  if (privateKeyInput !== privateKey) {
-    privateKey = privateKeyInput;
+  console.log(message);
+  // must check message buffer here for message limitation
+  const buffer = Buffer.from(message, 'utf-8');
+  if (buffer.length !== 7) {
+    return 'message-invalid';
   }
 
-  const signature = await DSRSA2048Service.signMessage(privateKey, message);
+  const iterations = 100;
 
-  // check valid
-  if (signature === 'message-invalid') {
-    $signatureOutput.textContent = 'Message is not 18-bit.';
-    return;
-  }
+  const hmacKey = HMACSHAService.generateRandomKey();
+  const rsaKeys = await DSRSA2048Service.generateKeys();
 
-  $signatureMessageInputBob.textContent = message;
+  return forkJoin([
+    PerformanceService.iterateHMAC(iterations, hmacKey, message),
+    PerformanceService.iterateRSA(
+      iterations,
+      rsaKeys.privateKey,
+      rsaKeys.publicKey,
+      message
+    ),
+  ]).subscribe((results) => {
+    const [hmac, rsa] = results;
+    const { signatures, verifications } = rsa;
 
-  $signatureOutput.textContent = signature;
-  $signatureInput.textContent = signature;
+    $hmacOutput.textContent = `${hmac.averageTime}ms`;
+    $rsaSignatureOutput.textContent = `${signatures.averageTime}ms`;
+    $rsaVerifyOutput.textContent = `${verifications.averageTime}ms`;
+  });
 }
 
-async function verify(event: SubmitEvent) {
-  event.preventDefault();
-
-  const form = event.target! as HTMLFormElement;
-  const formData = new FormData(form);
-  const { message, signature } = Object.fromEntries(
-    formData
-  ) as unknown as DecryptInput;
-
-  if (!message) {
-    $verifyOutput.textContent = 'No message to verify from.';
-    return;
-  }
-
-  if (!signature) {
-    $verifyOutput.textContent = 'No signature to verify from.';
-    return;
-  }
-
-  let publicKey = aliceKeys.publicKey;
-
-  const publicKeyInput = $publicKeyInput.value;
-
-  // check key
-  if (publicKeyInput !== publicKey) {
-    publicKey = publicKeyInput;
-  }
-
-  $verifyOutput.textContent = await DSRSA2048Service.verifySignature(
-    publicKey,
-    message,
-    signature
-  );
-}
-
-// generate random key and iv on page load
-async function init() {
-  aliceKeys = await DSRSA2048Service.generateKeys();
-
-  $publicKeyInput.value = aliceKeys.publicKey;
-  $privateKeyInput.value = aliceKeys.privateKey;
-}
-
-init();
-
-window.signMessage = signMessage;
-window.verify = verify;
+window.startIterations = startIterations;

@@ -12,7 +12,7 @@
   </head>
   <body class="bg-gray-900 text-white">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
-    <script type="module" src="/hw5/part2/main.ts"></script>
+    <script type="module" src="/hw5/part3/main.ts"></script>
 
     <div
       class="flex w-full h-full justify-center items-center flex-col pb-[4rem]"
@@ -28,33 +28,15 @@
           class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
         >
           <div class="flex flex-col w-full h-full space-y-6">
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-              Alice's Keys
-            </h5>
-
             <div>
               <label
-                for="public-key-input"
+                for="message-input"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Public Key</label
+                >Message to measure performance from</label
               >
               <input
                 type="text"
-                id="public-key-input"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                for="private-key-input"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Private Key</label
-              >
-              <input
-                type="text"
-                id="private-key-input"
+                id="message-input"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
               />
@@ -63,129 +45,108 @@
         </div>
       </div>
 
-      <div class="flex flex-row w-full h-[600px] gap-[4rem] px-[4rem]">
-        <div
-          class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
-        >
+      <div class="w-full gap-[4rem] px-[4rem] pb-[2rem]">
+        <div class="w-full">
           <form
-            onsubmit="signMessage(event)"
-            class="flex flex-col w-full h-full space-y-6"
+            onsubmit="startIterations(event)"
+            class="flex items-center justify-center w-full"
           >
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-              Alice
-            </h5>
-
-            <div class="w-full space-y-4">
-              <div>
-                <label
-                  for="signature-message-input-alice"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Message to sign w/ RSA</label
-                >
-                <textarea
-                  name="message"
-                  id="signature-message-input-alice"
-                  rows="2"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                ></textarea>
-              </div>
-            </div>
-
-            <div class="grow shrink">
-              <div class="flex items-center justify-center h-full">
-                <button
-                  type="submit"
-                  id="encrypt-submit"
-                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Generate Signature w/ RSA 2048-bit
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label
-                for="signature-output"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Generated Signature w/ RSA 2048-bit</label
+            <button
+              type="submit"
+              id="performance-button"
+              class="w-1/3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center justify-center gap-2"
+            >
+              <svg
+                id="performance-spinner"
+                class="w-5 h-5 text-white animate-spin hidden"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
               >
-              <textarea
-                id="signature-output"
-                rows="4"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                disabled
-              ></textarea>
-            </div>
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              <span id="performance-text">Start 100 Iterations</span>
+            </button>
           </form>
         </div>
+      </div>
 
-        <div
-          class="w-1/2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
-        >
-          <form
-            onsubmit="verify(event)"
-            class="flex flex-col w-full h-full space-y-6"
+      <div class="flex flex-col w-full h-max gap-[2rem] px-[4rem]">
+        <div class="flex flex-row w-full gap-[2rem] justify-evenly">
+          <div
+            class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
           >
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-              Bob
+            <h5
+              class="text-xl font-medium text-gray-900 dark:text-white pb-[2rem]"
+            >
+              HMAC Result
             </h5>
 
-            <div class="w-full space-y-4">
+            <div class="flex flex-row w-full gap-[2rem] justify-between">
               <div>
                 <label
-                  for="signature-message-input-bob"
+                  for="hmac-gen-time-input"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Message to verify</label
+                  >Avg. HMAC Generation Time</label
                 >
-                <textarea
-                  name="message"
-                  id="signature-message-input-bob"
-                  rows="2"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                ></textarea>
+                <span id="hmac-gen-time-input">N/A</span>
               </div>
+            </div>
+          </div>
 
+          <div
+            class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+          >
+            <h5
+              class="text-xl font-medium text-gray-900 dark:text-white pb-[2rem]"
+            >
+              RSA Signature Generation Result
+            </h5>
+
+            <div class="flex flex-row w-full gap-[2rem] justify-between">
               <div>
                 <label
-                  for="signature-input"
+                  for="decrypt-text-input"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Signature to verify</label
+                  >Avg. Signature Generation Time</label
                 >
-                <textarea
-                  name="signature"
-                  id="signature-input"
-                  rows="4"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                ></textarea>
+                <span id="rsa-signature-gen-time-input">N/A</span>
               </div>
             </div>
+          </div>
 
-            <div class="grow shrink">
-              <div class="flex items-center justify-center h-full">
-                <button
-                  type="submit"
-                  id="verify-submit"
-                  class="w-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          <div
+            class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+          >
+            <h5
+              class="text-xl font-medium text-gray-900 dark:text-white pb-[2rem]"
+            >
+              RSA Verification Generation Result
+            </h5>
+
+            <div class="flex flex-row w-full gap-[2rem] justify-between">
+              <div>
+                <label
+                  for="rsa-verification-time-input"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Avg. Verification Time</label
                 >
-                  Verify
-                </button>
+                <span id="rsa-verification-time-input">N/A</span>
               </div>
             </div>
-
-            <div>
-              <label
-                for="verify-output"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Result</label
-              >
-              <textarea
-                id="verify-output"
-                rows="1"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                disabled
-              ></textarea>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

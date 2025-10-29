@@ -28,9 +28,6 @@ const $privateKeyInput = document.getElementById(
   'private-key-input'
 ) as HTMLInputElement;
 
-const $signatureMessageInputAlice = document.getElementById(
-  'signature-message-input-alice'
-) as HTMLInputElement;
 const $signatureMessageInputBob = document.getElementById(
   'signature-message-input-bob'
 ) as HTMLInputElement;
@@ -66,7 +63,7 @@ async function signMessage(event: SubmitEvent) {
     privateKey = privateKeyInput;
   }
 
-  const signature = await DSRSA2048Service.signMessage(privateKey, message);
+  const signature = await DSRSA2048Service.signMessage(18, privateKey, message);
 
   // check valid
   if (signature === 'message-invalid') {
@@ -123,7 +120,7 @@ async function init() {
   $privateKeyInput.value = aliceKeys.privateKey;
 }
 
-init();
+await init();
 
 window.signMessage = signMessage;
 window.verify = verify;
