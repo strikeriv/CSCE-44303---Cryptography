@@ -1,28 +1,31 @@
-import { defineConfig } from 'vite';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import { defineConfig } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  root: 'src',
+  root: "src",
   plugins: [tailwindcss(), nodePolyfills()],
   build: {
-    outDir: '../dist',
+    outDir: "../dist",
     rollupOptions: {
       input: {
-        main: 'src/index.html',
-        hw1: 'src/hw1/index.html',
-        'hw1-encrypt': 'src/hw1/encrypt/index.html',
-        'hw1-decrypt': 'src/hw1/decrypt/index.html',
-        hw3: 'src/hw3/index.html',
-        'hw3-part1': 'src/hw3/part1/index.html',
-        'hw3-part2': 'src/hw3/part2/index.html',
-        'hw3-part3': 'src/hw3/part3/index.html',
-        hw5: 'src/hw5/index.html',
-        'hw5-part1': 'src/hw5/part1/index.html',
-        'hw5-part2': 'src/hw5/part2/index.html',
-        'hw5-part3': 'src/hw5/part3/index.html',
-        'hw5-part4': 'src/hw5/part4/index.html',
+        main: "src/index.html",
+        hw1: "src/hw1/index.html",
+        "hw1-encrypt": "src/hw1/encrypt/index.html",
+        "hw1-decrypt": "src/hw1/decrypt/index.html",
+        hw3: "src/hw3/index.html",
+        "hw3-part1": "src/hw3/part1/index.html",
+        "hw3-part2": "src/hw3/part2/index.html",
+        "hw3-part3": "src/hw3/part3/index.html",
+        hw5: "src/hw5/index.html",
+        "hw5-part1": "src/hw5/part1/index.html",
+        "hw5-part2": "src/hw5/part2/index.html",
+        "hw5-part3": "src/hw5/part3/index.html",
+        "hw5-part4": "src/hw5/part4/index.html",
+        hw7: "src/hw7/index.html",
+        "hw7-part1": "src/hw7/part1/index.html",
+        "hw7-part2": "src/hw7/part2/index.html",
       },
     },
   },
