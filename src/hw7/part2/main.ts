@@ -1,5 +1,5 @@
-import { switchMap } from 'rxjs';
-import { SHA256Service } from '../../modules/hw7/part1/sha256.service';
+import { from, switchMap } from 'rxjs';
+import { SHA256SaltService } from '../../modules/hw7/part2/sha256-salt.service';
 
 declare global {
   interface Window {
@@ -42,8 +42,9 @@ function launchAttack(event: SubmitEvent) {
   const passwordFile = $passwordFileInput.files?.[0];
 
   if (!passwordFile) {
-    $timeNeededOutput.textContent = 'No password hash file selected.';
-    $recoveredPasswordsOutput.textContent = 'No password hash file selected.';
+    $timeNeededOutput.textContent = 'No salted password hash file selected.';
+    $recoveredPasswordsOutput.textContent =
+      'No salted password hash file selected.';
     return;
   }
 
@@ -61,10 +62,15 @@ function launchAttack(event: SubmitEvent) {
   $timeNeededOutput.textContent = 'Running...';
   $recoveredPasswordsOutput.textContent = 'Running...';
 
-  SHA256Service.parsePasswordHashFile(passwordFile)
+  SHA256SaltService.parsePasswordHashFileSalted(passwordFile)
     .pipe(
       switchMap((hashes) =>
-        SHA256Service.dictionaryAttack(Number(passwordLength), hashes)
+        from(
+          SHA256SaltService.dictionaryAttackSalted(
+            Number(passwordLength),
+            hashes
+          )
+        )
       )
     )
     .subscribe((results) => {
